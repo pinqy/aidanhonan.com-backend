@@ -19,5 +19,5 @@ go build -tags netgo -ldflags '-s -w' -o app
 
 To hit the endpoints:
 ```
-curl -d {<arguments>} localhost:8080/<api_name>
+curl -d {<arguments>} http://localhost:10000/<api_name>
 ```
