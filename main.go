@@ -25,6 +25,9 @@ func main() {
 	// Route handlers
 	router.POST("/test", testApi)
 
+	// Fallback handler for invalid requests
+	router.NoRoute(noRouteHandler())
+
 	// Start server
 	port := utils.GetEnv("PORT", "10000")
 	fmt.Printf("Server listening on http://localhost:%s/\n", port)
@@ -40,10 +43,18 @@ func testApi(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, fmt.Sprintf("test response (after %ds)", randWait))
 }
 
+// NoRoute Handler
+func noRouteHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusForbidden, gin.H{"code": "FORBIDDEN", "message": "Access Denied"})
+	}
+}
+
 // CORS Middleware
 func corsMiddleware() gin.HandlerFunc {
 	// Define allowed origins
-	originsString := "https://aidanhonan.com,http://localhost:4200"
+	// For local testing: originsString := "http://localhost:4200"
+	originsString := "https://aidanhonan.com,https://test.aidanhonan.com"
 	var allowedOrigins []string
 	if originsString != "" {
 		allowedOrigins = strings.Split(originsString, ",")
