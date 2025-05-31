@@ -2,6 +2,12 @@
 
 ## Local Testing
 
+To run all unit tests
+
+```
+go test --cover ./...
+```
+
 Quick way to run the backend locally:
 
 ```
