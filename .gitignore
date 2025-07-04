@@ -1,3 +1,4 @@
 backend.*
 app
 dev_setup.sh
+coverage.out
