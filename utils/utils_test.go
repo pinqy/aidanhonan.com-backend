@@ -1,7 +1,9 @@
-package utils
+package utils_test
 
 import (
 	"testing"
+
+	"aidanhonan.com/backend/utils"
 )
 
 var testEnvName string = "TEST_ENV_VAR_UNUSED"
@@ -10,7 +12,7 @@ func TestGetEnv_HappyPath(t *testing.T) {
 	expectedEnv := "test"
 	t.Setenv(testEnvName, expectedEnv)
 
-	actualEnv := GetEnv(testEnvName, "default")
+	actualEnv := utils.GetEnv(testEnvName, "default")
 
 	if expectedEnv != actualEnv {
 		t.Errorf(`Expected "%s" but found "%s"`, expectedEnv, actualEnv)
@@ -20,7 +22,7 @@ func TestGetEnv_HappyPath(t *testing.T) {
 func TestGetEnv_UsesDefault(t *testing.T) {
 	expectedEnv := "default"
 
-	actualEnv := GetEnv(testEnvName, "default")
+	actualEnv := utils.GetEnv(testEnvName, "default")
 
 	if expectedEnv != actualEnv {
 		t.Errorf(`Expected "%s" but found "%s"`, expectedEnv, actualEnv)
@@ -35,5 +37,5 @@ func TestGetEnv_PanicWithNoDefault(t *testing.T) {
 		}
 	}()
 
-	GetEnv(testEnvName, "")
+	utils.GetEnv(testEnvName, "")
 }
