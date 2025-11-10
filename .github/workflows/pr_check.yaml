@@ -18,13 +18,10 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24.0'
+          go-version: '1.25.0'
 
       - name: Install dependencies
         run: go get .
 
-      - name: Build
-        run: go build -v ./...
-
-      - name: Test with the Go CLI
-        run: go test -cover ./...
+      - name: Build and Test
+        run: make release

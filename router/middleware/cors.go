@@ -10,8 +10,8 @@ import (
 // CORS middleware
 func CORS() gin.HandlerFunc {
 	// Define allowed origins
-	// For local testing: originsString := "http://localhost:4200"
 	originsString := "https://aidanhonan.com,https://test.aidanhonan.com"
+	// originsString += ",http://localhost:4200" // Uncomment for local testing
 	var allowedOrigins []string
 	if originsString != "" {
 		allowedOrigins = strings.Split(originsString, ",")
