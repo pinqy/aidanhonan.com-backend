@@ -1,22 +1,34 @@
 BINARY_NAME=app
-COVERAGE_FILE=coverage.out
+COVERAGE_FOLDER=coverage
+GO_COVERAGE_FILE=coverage/coverage.out
+LCOV_COVERAGE_FILE=coverage/coverage.lcov
  
-all: build test
+all: build test_cov_pretty
+
+release: build test_cov
  
 build:
-	go build -o ${BINARY_NAME}
+	go build -tags netgo -ldflags '-s -w' -o ${BINARY_NAME}
 
 test:
 	go test ./...
-	
+
 test_cov:
-	go test -coverprofile ${COVERAGE_FILE} ./...
+	mkdir -p ${COVERAGE_FOLDER}
+	go test -coverprofile ${GO_COVERAGE_FILE} -v ./...
+	go tool cover -func=coverage/coverage.out
+	
+test_cov_pretty:
+	mkdir -p ${COVERAGE_FOLDER}
+	go test -coverprofile ${GO_COVERAGE_FILE} -v ./... | sh prettify_test.sh
+	gcov2lcov -infile=${GO_COVERAGE_FILE} -outfile=${LCOV_COVERAGE_FILE}
+	go tool cover -func=coverage/coverage.out
  
 run:
-	go build -tags netgo -ldflags '-s -w' -o ${BINARY_NAME}
+	build
 	./${BINARY_NAME}
  
 clean:
 	go clean
 	rm -f ${BINARY_NAME}
-	rm -f ${COVERAGE_FILE}
+	rm -rf ${COVERAGE_FOLDER}
